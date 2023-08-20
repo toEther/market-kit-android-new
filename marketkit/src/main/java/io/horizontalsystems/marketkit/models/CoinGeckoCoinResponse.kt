@@ -107,7 +107,7 @@ data class CoinGeckoCoinResponse(
 
     companion object {
         private val smartContractPlatforms: List<String> =
-            listOf("tron", "komerco", "eos", "binance-smart-chain", "binancecoin")
+            listOf("tron", "ethereum", "eos", "binance-smart-chain", "binancecoin")
     }
 }
 
