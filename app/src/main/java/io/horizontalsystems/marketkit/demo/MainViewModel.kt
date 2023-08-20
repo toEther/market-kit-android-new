@@ -118,25 +118,6 @@ class MainViewModel(private val marketKit: MarketKit) : ViewModel() {
             }
     }
 
-    fun runGetChartPointByHsTimePeriod() {
-        val coinUid = "ethereum"
-        val currencyCode = "USD"
-
-        val interval = HsPointTimePeriod.Hour1
-
-        //fetch chartInfo from API
-        marketKit.chartPointsSingle(coinUid, currencyCode, interval, 12)
-            .subscribeOn(Schedulers.io())
-            .subscribe({
-                Log.w("AAA", "runGetChartPointByHsTimePeriod: ${it}")
-            }, {
-                Log.e("AAA", "runGetChartPointByHsTimePeriod Error", it)
-            })
-            .let {
-                disposables.add(it)
-            }
-    }
-
     fun runFilterFullCoins() {
         val filter = "if"
         val fullCoins = marketKit.fullCoins(filter, 100)
@@ -373,14 +354,6 @@ class MainViewModel(private val marketKit: MarketKit) : ViewModel() {
         }
     }
 
-    fun runAllBlockchains() {
-        val blockchains = marketKit.allBlockchains()
-        Log.w("AAA", "runAllBlockchains ${blockchains.size} blockchains found")
-        blockchains.forEach {
-            Log.w("AAA", "runAllBlockchains name: ${it.name}")
-        }
-    }
-
     fun runFullCoins() {
         val fullCoins = marketKit.fullCoins(listOf("bitcoin", "ethereum"))
         Log.w("AAA", "runFullCoins ${fullCoins.size} coins found")
@@ -484,8 +457,7 @@ class MainViewModel(private val marketKit: MarketKit) : ViewModel() {
             .subscribeOn(Schedulers.io())
             .subscribe({ data ->
                 Log.e("AAA", "cexVolume rank30d: ${data.cexVolume?.rank30d} points: ${data.cexVolume?.points} dexVolume rank30d: ${data.dexVolume?.rank30d} points: ${data.dexVolume?.points} ")
-                Log.e("AAA", "fundsInvested: ${data.fundsInvested} holders: ${data.holders} holders rating: ${data.holdersRating} ")
-                Log.e("AAA", "fee fee rank30d: ${data.fee?.rank30d} value30d: ${data.fee?.value30d} ")
+                Log.e("AAA", "fundsInvested: ${data.fundsInvested} holders: ${data.holders} ")
             }, {
                 Log.e("AAA", "runAnalyticsPreview error", it)
             }).let {

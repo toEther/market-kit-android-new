@@ -12,7 +12,6 @@ import io.horizontalsystems.marketkit.syncers.ExchangeSyncer
 import io.horizontalsystems.marketkit.syncers.HsDataSyncer
 import io.reactivex.Observable
 import io.reactivex.Single
-import retrofit2.Response
 import java.math.BigDecimal
 import java.util.*
 
@@ -59,9 +58,6 @@ class MarketKit(
 
     fun blockchains(uids: List<String>): List<Blockchain> =
         coinManager.blockchains(uids)
-
-    fun allBlockchains(): List<Blockchain> =
-        coinManager.allBlockchains()
 
     fun blockchain(uid: String): Blockchain? =
         coinManager.blockchain(uid)
@@ -314,14 +310,6 @@ class MarketKit(
         return hsProvider.rankMultiValueSingle(authToken, "revenue", currencyCode)
     }
 
-    fun feeRanksSingle(authToken: String, currencyCode: String): Single<List<RankMultiValue>> {
-        return hsProvider.rankMultiValueSingle(authToken, "fee", currencyCode)
-    }
-
-    fun subscriptionsSingle(addresses: List<String>): Single<List<SubscriptionResponse>> {
-        return hsProvider.subscriptionsSingle(addresses)
-    }
-
     // Overview
     fun marketOverviewSingle(currencyCode: String): Single<MarketOverview> =
         marketOverviewManager.marketOverviewSingle(currencyCode)
@@ -335,48 +323,22 @@ class MarketKit(
     fun chartPointsSingle(
         coinUid: String,
         currencyCode: String,
-        interval: HsPointTimePeriod,
-        pointCount: Int
-    ): Single<List<ChartPoint>> {
-        val fromTimestamp = Date().time / 1000 - interval.interval * pointCount
-
-        return hsProvider.coinPriceChartSingle(coinUid, currencyCode, interval, fromTimestamp)
-            .map { response ->
-                response.map { chartCoinPrice ->
-                    chartCoinPrice.chartPoint
-                }
-            }
-    }
-
-    fun chartPointsSingle(
-        coinUid: String,
-        currencyCode: String,
         periodType: HsPeriodType
-    ): Single<Pair<Long, List<ChartPoint>>> {
-        val interval = HsChartRequestHelper.pointInterval(periodType)
-        val visibleTimestamp: Long
-        val fromTimestamp: Long?
+    ): Single<List<ChartPoint>> {
+        val interval: HsPointTimePeriod
+        var fromTimestamp: Long? = null
         when (periodType) {
             is HsPeriodType.ByPeriod -> {
                 val currentTime = Date().time / 1000
-                visibleTimestamp = HsChartRequestHelper.fromTimestamp(currentTime, periodType)
-                fromTimestamp = visibleTimestamp
-            }
-            is HsPeriodType.ByCustomPoints -> {
-                val currentTime = Date().time / 1000
-                visibleTimestamp = HsChartRequestHelper.fromTimestamp(currentTime, periodType)
-                val customPointsInterval = interval.interval * periodType.pointsCount
-                fromTimestamp = visibleTimestamp - customPointsInterval
+                fromTimestamp = HsChartRequestHelper.fromTimestamp(currentTime, periodType)
+                interval = HsChartRequestHelper.pointInterval(periodType)
             }
             is HsPeriodType.ByStartTime -> {
-                visibleTimestamp = periodType.startTime
-                fromTimestamp = null
+                interval = HsChartRequestHelper.pointInterval(periodType)
             }
         }
         return hsProvider.coinPriceChartSingle(coinUid, currencyCode, interval, fromTimestamp)
-            .map {
-                Pair(visibleTimestamp, it.map { it.chartPoint })
-            }
+            .map { response -> response.map { it.chartPoint } }
     }
 
     fun chartStartTimeSingle(coinUid: String): Single<Long> {
@@ -414,10 +376,6 @@ class MarketKit(
 
     fun authenticate(signature: String, address: String): Single<String> {
         return hsProvider.authenticate(signature, address)
-    }
-
-    fun requestPersonalSupport(authToken: String, username: String): Single<Response<Void>> {
-        return hsProvider.requestPersonalSupport(authToken, username)
     }
 
     //Misc

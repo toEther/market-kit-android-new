@@ -3,7 +3,6 @@ package io.horizontalsystems.marketkit.providers
 import com.google.gson.annotations.SerializedName
 import io.horizontalsystems.marketkit.models.*
 import io.reactivex.Single
-import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -275,12 +274,6 @@ class HsProvider(baseUrl: String, apiKey: String) {
         return service.getRankMultiValue(authToken, type, currencyCode)
     }
 
-    fun subscriptionsSingle(
-        addresses: List<String>
-    ): Single<List<SubscriptionResponse>> {
-        return service.getSubscriptions(addresses.joinToString(separator = ","))
-    }
-
     fun authGetSignMessage(address: String): Single<String> {
         return service.authGetSignMessage(address)
             .map { it["message"] }
@@ -289,10 +282,6 @@ class HsProvider(baseUrl: String, apiKey: String) {
     fun authenticate(signature: String, address: String): Single<String> {
         return service.authenticate(signature, address)
             .map { it["token"] }
-    }
-
-    fun requestPersonalSupport(authToken: String, username: String): Single<Response<Void>> {
-        return service.requestPersonalSupport(authToken, username)
     }
 
     private interface MarketService {
@@ -449,11 +438,6 @@ class HsProvider(baseUrl: String, apiKey: String) {
             @Query("currency") currencyCode: String,
         ): Single<List<RankMultiValue>>
 
-        @GET("analytics/subscriptions")
-        fun getSubscriptions(
-            @Query("address") addresses: String
-        ): Single<List<SubscriptionResponse>>
-
         @GET("defi-protocols/{coinUid}/tvls")
         fun getMarketInfoTvl(
             @Path("coinUid") coinUid: String,
@@ -542,13 +526,6 @@ class HsProvider(baseUrl: String, apiKey: String) {
             @Field("signature") signature: String,
             @Field("address") address: String
         ): Single<Map<String, String>>
-
-        @FormUrlEncoded
-        @POST("support/start-chat")
-        fun requestPersonalSupport(
-            @Header("authorization") auth: String,
-            @Field("username") username: String,
-        ): Single<Response<Void>>
 
 
         companion object {
