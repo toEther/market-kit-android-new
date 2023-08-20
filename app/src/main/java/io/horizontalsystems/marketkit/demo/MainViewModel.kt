@@ -35,7 +35,7 @@ class MainViewModel(private val marketKit: MarketKit) : ViewModel() {
     }
 
     fun runInvestments() {
-        val coinUid = "ethereum"
+        val coinUid = "komerco"
 
         marketKit.investmentsSingle(coinUid)
             .subscribeOn(Schedulers.io())
@@ -70,7 +70,7 @@ class MainViewModel(private val marketKit: MarketKit) : ViewModel() {
         marketKit.sync()
         marketKit.refreshCoinPrices("USD")
 
-        marketKit.coinPriceMapObservable(listOf("bitcoin", "ethereum", "solana"), "USD")
+        marketKit.coinPriceMapObservable(listOf("bitcoin", "komerco", "solana"), "USD")
             .subscribeOn(Schedulers.io())
             .subscribe({
                 Log.w("AAA", "coinPrices: ${it.size}")
@@ -86,7 +86,7 @@ class MainViewModel(private val marketKit: MarketKit) : ViewModel() {
     }
 
     fun runGetChartInfo() {
-        val coinUid = "ethereum"
+        val coinUid = "komerco"
         val currencyCode = "USD"
 
         val time = Date().time / 1000 - TimeUnit.DAYS.toSeconds(7)
@@ -144,7 +144,7 @@ class MainViewModel(private val marketKit: MarketKit) : ViewModel() {
     }
 
     fun runFetchMarketInfosByCoinUids() {
-        val coinUids = listOf("bitcoin", "ethereum", "solana", "ripple")
+        val coinUids = listOf("bitcoin", "komerco", "solana", "ripple")
         val currencyCode = "USD"
         marketKit.marketInfosSingle(coinUids, currencyCode)
             .subscribeOn(Schedulers.io())
@@ -297,7 +297,7 @@ class MainViewModel(private val marketKit: MarketKit) : ViewModel() {
     }
 
     fun runGetMarketTickers() {
-        val coinUid = "ethereum"
+        val coinUid = "komerco"
         marketKit.marketTickersSingle(coinUid)
             .subscribeOn(Schedulers.io())
             .subscribe({
@@ -338,7 +338,7 @@ class MainViewModel(private val marketKit: MarketKit) : ViewModel() {
     }
 
     fun runTokensByBlockchainType() {
-        val blockchainType = BlockchainType.Ethereum
+        val blockchainType = BlockchainType.Komerco
         val coinList = marketKit.tokens(blockchainType, "eth", 30)
         Log.w("AAA", "tokensByBlockchainType ${coinList.size} coins found")
         coinList.forEach {
@@ -347,7 +347,7 @@ class MainViewModel(private val marketKit: MarketKit) : ViewModel() {
     }
 
     fun runBlockchainsType() {
-        val blockchains = marketKit.blockchains(listOf("bitcoin", "ethereum"))
+        val blockchains = marketKit.blockchains(listOf("bitcoin", "komerco"))
         Log.w("AAA", "runBlockchainsType ${blockchains.size} coins found")
         blockchains.forEach {
             Log.w("AAA", "runBlockchainsType name: ${it.name}")
@@ -355,7 +355,7 @@ class MainViewModel(private val marketKit: MarketKit) : ViewModel() {
     }
 
     fun runFullCoins() {
-        val fullCoins = marketKit.fullCoins(listOf("bitcoin", "ethereum"))
+        val fullCoins = marketKit.fullCoins(listOf("bitcoin", "komerco"))
         Log.w("AAA", "runFullCoins ${fullCoins.size} coins found")
         fullCoins.forEach {
             Log.w("AAA", "runFullCoins name: ${it.coin.name} tokens: ${it.tokens.size}")
@@ -363,14 +363,14 @@ class MainViewModel(private val marketKit: MarketKit) : ViewModel() {
     }
 
     fun runTokenByTokenQuery() {
-        val blockchainType = BlockchainType.Ethereum
+        val blockchainType = BlockchainType.Komerco
         val coin = marketKit.token(TokenQuery(blockchainType, TokenType.Native))
         Log.w("AAA", "runTokenByTokenQuery $coin")
     }
 
     fun runTokensByTokenQuery() {
         val queries = listOf(
-            TokenQuery(BlockchainType.Ethereum, TokenType.Native),
+            TokenQuery(BlockchainType.Komerco, TokenType.Native),
             TokenQuery(BlockchainType.BinanceSmartChain, TokenType.Native)
         )
 
@@ -420,7 +420,7 @@ class MainViewModel(private val marketKit: MarketKit) : ViewModel() {
     }
 
     fun runTopPlatformMarketCapPoints() {
-        val chain = "ethereum"
+        val chain = "komerco"
         val currencyCode = "rub"
         marketKit.topPlatformMarketCapPointsSingle(chain, HsTimePeriod.Day1, currencyCode)
             .subscribeOn(Schedulers.io())
@@ -436,7 +436,7 @@ class MainViewModel(private val marketKit: MarketKit) : ViewModel() {
     }
 
     fun runTopPlatformCoinList() {
-        val chain = "ethereum"
+        val chain = "komerco"
         val currencyCode = "eur"
         marketKit.topPlatformCoinListSingle(chain, currencyCode)
             .subscribeOn(Schedulers.io())
@@ -452,7 +452,7 @@ class MainViewModel(private val marketKit: MarketKit) : ViewModel() {
     }
 
     fun runAnalyticsPreview() {
-        val chain = "ethereum"
+        val chain = "komerco"
         marketKit.analyticsPreviewSingle(chain, listOf())
             .subscribeOn(Schedulers.io())
             .subscribe({ data ->
@@ -466,7 +466,7 @@ class MainViewModel(private val marketKit: MarketKit) : ViewModel() {
     }
 
     fun runAnalytics() {
-        val coinUid = "ethereum"
+        val coinUid = "komerco"
         val currencyCode = "usd"
         marketKit.analyticsSingle(authToken, coinUid, currencyCode)
             .subscribeOn(Schedulers.io())
@@ -482,7 +482,7 @@ class MainViewModel(private val marketKit: MarketKit) : ViewModel() {
 
     fun runTokenHolders() {
         val coinUid = "uniswap"
-        val blockchainUid = "ethereum"
+        val blockchainUid = "komerco"
         marketKit.tokenHoldersSingle(authToken, coinUid, blockchainUid)
             .subscribeOn(Schedulers.io())
             .subscribe({ data ->

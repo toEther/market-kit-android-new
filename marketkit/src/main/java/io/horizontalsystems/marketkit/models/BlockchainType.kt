@@ -23,7 +23,7 @@ sealed class BlockchainType : Parcelable {
     object Zcash : BlockchainType()
 
     @Parcelize
-    object Ethereum : BlockchainType()
+    object Komerco : BlockchainType()
 
     @Parcelize
     object BinanceSmartChain : BlockchainType()
@@ -66,12 +66,12 @@ sealed class BlockchainType : Parcelable {
             is Litecoin -> "litecoin"
             is Dash -> "dash"
             is Zcash -> "zcash"
-            is Ethereum -> "ethereum"
+            is Komerco -> "komerco"
             is BinanceSmartChain -> "binance-smart-chain"
             is BinanceChain -> "binancecoin"
             is Polygon -> "polygon-pos"
             is Avalanche -> "avalanche"
-            is Optimism -> "optimistic-ethereum"
+            is Optimism -> "optimistic-komerco"
             is ArbitrumOne -> "arbitrum-one"
             is Solana -> "solana"
             is Gnosis -> "gnosis"
@@ -95,7 +95,7 @@ sealed class BlockchainType : Parcelable {
         Litecoin -> "litecoin"
         Dash -> "dash"
         Zcash -> "zcash"
-        Ethereum -> "ethereum"
+        Komerco -> "komerco"
         BinanceSmartChain -> "binanceSmartChain"
         Polygon -> "polygon"
         Avalanche -> "avalanche"
@@ -119,12 +119,12 @@ sealed class BlockchainType : Parcelable {
                 "litecoin" -> Litecoin
                 "dash" -> Dash
                 "zcash" -> Zcash
-                "ethereum" -> Ethereum
+                "komerco" -> Komerco
                 "binance-smart-chain" -> BinanceSmartChain
                 "binancecoin" -> BinanceChain
                 "polygon-pos" -> Polygon
                 "avalanche" -> Avalanche
-                "optimistic-ethereum" -> Optimism
+                "optimistic-komerco" -> Optimism
                 "arbitrum-one" -> ArbitrumOne
                 "solana" -> Solana
                 "gnosis" -> Gnosis
